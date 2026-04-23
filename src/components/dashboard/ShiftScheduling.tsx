@@ -254,7 +254,8 @@ export const ShiftScheduling: React.FC<ShiftSchedulingProps> = ({ token, user })
           <Loader2 className="animate-spin text-brand-600" size={48} />
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-7 gap-px bg-slate-200 border border-slate-200 rounded-3xl overflow-hidden shadow-sm">
+        <div className="space-y-8">
+          <div className="grid grid-cols-1 md:grid-cols-7 gap-px bg-slate-200 border border-slate-200 rounded-3xl overflow-hidden shadow-sm">
           {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
             <div key={d} className="bg-slate-50 p-4 text-center text-[10px] font-black text-slate-400 uppercase tracking-widest">{d}</div>
           ))}
@@ -290,6 +291,35 @@ export const ShiftScheduling: React.FC<ShiftSchedulingProps> = ({ token, user })
               </div>
             </div>
           ))}
+          </div>
+
+          {/* Upcoming Shifts List */}
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm mt-8">
+            <h3 className="font-bold flex items-center gap-2 text-slate-800 mb-4">
+              <CalendarIcon size={18} className="text-brand-600" /> Upcoming Shifts
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {shifts.filter(s => new Date(s.start_time) > new Date()).sort((a,b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime()).map(shift => (
+                <div key={shift._id} className={`p-4 border rounded-xl flex flex-col justify-between hover:bg-slate-50 transition-colors ${getShiftColor(shift.start_time)}`}>
+                   <div>
+                      <div className="font-black text-sm">{shift.title}</div>
+                      <div className="text-xs font-bold opacity-70 mb-2">{format(new Date(shift.start_time), 'EEEE, MMM d, yyyy')}</div>
+                      <div className="text-xs font-bold opacity-80 flex items-center gap-1">
+                         <Clock size={12} /> {format(new Date(shift.start_time), 'HH:mm')} - {format(new Date(shift.end_time), 'HH:mm')}
+                      </div>
+                   </div>
+                   <div className="mt-4 pt-3 border-t border-black/10 flex items-center justify-between">
+                     <div className="text-xs font-bold flex items-center gap-2">
+                        <UserIcon size={12} /> {shift.user_id?.name || 'Unassigned'}
+                     </div>
+                   </div>
+                </div>
+              ))}
+              {shifts.filter(s => new Date(s.start_time) > new Date()).length === 0 && (
+                <div className="col-span-full text-center py-6 text-slate-400 text-sm border-2 border-dashed border-slate-100 rounded-xl">No upcoming shifts scheduled.</div>
+              )}
+            </div>
+          </div>
         </div>
       )}
 

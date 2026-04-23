@@ -16,7 +16,7 @@ export const EmployeeActions: React.FC<EmployeeActionsProps> = ({ token }) => {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [history, setHistory] = useState<any[]>([]);
-  const [nextShift, setNextShift] = useState<any>(null);
+  const [upcomingShifts, setUpcomingShifts] = useState<any[]>([]);
 
   // Retrieves attendance logs and upcoming shifts
   const fetchData = async () => {
@@ -41,7 +41,7 @@ export const EmployeeActions: React.FC<EmployeeActionsProps> = ({ token }) => {
           .filter((s: any) => new Date(s.start_time) > new Date())
           .sort((a: any, b: any) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime());
         
-        if (futureShifts.length > 0) setNextShift(futureShifts[0]);
+        if (futureShifts.length > 0) setUpcomingShifts(futureShifts.slice(0, 5));
       }
     } catch (err) {
       console.error('Fetch Data Error:', err);
@@ -169,34 +169,10 @@ export const EmployeeActions: React.FC<EmployeeActionsProps> = ({ token }) => {
 
   return (
     <div className="space-y-6">
-      {/* Next Shift Banner */}
-      <AnimatePresence>
-        {nextShift && (
-          <motion.div 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-brand-600 p-4 rounded-2xl text-white flex items-center justify-between shadow-lg shadow-brand-600/20"
-          >
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
-                <Clock size={20} />
-              </div>
-              <div>
-                <div className="text-[10px] font-black uppercase tracking-widest opacity-70">Next Scheduled Shift</div>
-                <div className="font-bold">{format(new Date(nextShift.start_time), 'EEEE, MMM d')} at {format(new Date(nextShift.start_time), 'p')}</div>
-              </div>
-            </div>
-            <div className="hidden md:block text-right">
-               <div className="text-[10px] font-black uppercase tracking-widest opacity-70">Duration</div>
-               <div className="font-bold">{nextShift.title || 'Work Shift'}</div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       <div className="grid lg:grid-cols-2 gap-8">
-        {/* Primary Action Card */}
-        <div className="bg-slate-900 p-8 rounded-2xl text-white flex flex-col justify-between shadow-xl shadow-slate-900/20">
+        <div className="flex flex-col gap-6">
+          {/* Primary Action Card */}
+          <div className="bg-slate-900 p-8 rounded-2xl text-white flex flex-col justify-between shadow-xl shadow-slate-900/20">
           <div>
             <h3 className="text-2xl font-bold mb-2">Punch Clock</h3>
             <p className="text-slate-400 mb-6 text-sm leading-relaxed">
@@ -208,27 +184,26 @@ export const EmployeeActions: React.FC<EmployeeActionsProps> = ({ token }) => {
             </div>
           </div>
           
-          <div className="flex flex-col gap-4">
-            {!isClockedIn ? (
-              <button 
-                onClick={() => handleAction('clock-in')}
-                disabled={status === 'loading'}
-                className="py-12 bg-brand-600 rounded-xl text-4xl font-black uppercase tracking-tighter hover:bg-brand-700 transition-all flex flex-col items-center gap-4 active:scale-[0.98] shadow-lg shadow-brand-600/30 disabled:opacity-50"
-              >
-                {status === 'loading' ? <Loader2 size={48} className="animate-spin" /> : <Clock size={48} />}
-                {status === 'loading' ? 'Verifying...' : 'Clock In'}
-              </button>
-            ) : (
-              <button 
-                onClick={() => handleAction('clock-out')}
-                disabled={status === 'loading'}
-                className="py-12 bg-red-600 rounded-xl text-4xl font-black uppercase tracking-tighter hover:bg-red-700 transition-all flex flex-col items-center gap-4 active:scale-[0.98] shadow-lg shadow-red-600/30 disabled:opacity-50"
-              >
-                {status === 'loading' ? <Loader2 size={48} className="animate-spin" /> : <LogOut size={48} />}
-                {status === 'loading' ? 'Verifying...' : 'Clock Out'}
-              </button>
-            )}
+          <div className="flex gap-4">
+            <button 
+              onClick={() => handleAction('clock-in')}
+              disabled={status === 'loading' || isClockedIn}
+              className={`flex-1 py-10 rounded-xl text-2xl font-black uppercase tracking-tighter transition-all flex flex-col items-center gap-4 active:scale-[0.98] shadow-lg ${!isClockedIn ? 'bg-brand-600 hover:bg-brand-700 shadow-brand-600/30 text-white' : 'bg-slate-800 text-slate-500 opacity-50 cursor-not-allowed'}`}
+            >
+              {status === 'loading' && !isClockedIn ? <Loader2 size={40} className="animate-spin" /> : <Clock size={40} />}
+              Clock In
+            </button>
+            <button 
+              onClick={() => handleAction('clock-out')}
+              disabled={status === 'loading' || !isClockedIn}
+              className={`flex-1 py-10 rounded-xl text-2xl font-black uppercase tracking-tighter transition-all flex flex-col items-center gap-4 active:scale-[0.98] shadow-lg ${isClockedIn ? 'bg-red-600 hover:bg-red-700 shadow-red-600/30 text-white' : 'bg-slate-800 text-slate-500 opacity-50 cursor-not-allowed'}`}
+            >
+              {status === 'loading' && isClockedIn ? <Loader2 size={40} className="animate-spin" /> : <LogOut size={40} />}
+              Clock Out
+            </button>
+          </div>
 
+          <div className="flex flex-col gap-4 mt-6">
             <AnimatePresence>
               {status === 'success' && (
                 <motion.div 
@@ -260,6 +235,33 @@ export const EmployeeActions: React.FC<EmployeeActionsProps> = ({ token }) => {
             </AnimatePresence>
           </div>
         </div>
+          
+        {/* Upcoming Shifts List */}
+        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm h-fit">
+          <h3 className="font-bold flex items-center gap-2 text-slate-800 mb-4">
+            <Calendar size={18} className="text-brand-600" /> Upcoming Shifts
+          </h3>
+          <div className="space-y-3">
+            {upcomingShifts.length === 0 ? (
+              <div className="text-center py-6 text-slate-400 text-sm border-2 border-dashed border-slate-100 rounded-xl">No upcoming shifts.</div>
+            ) : (
+              upcomingShifts.map(shift => (
+                <div key={shift._id} className="p-3 bg-slate-50 border border-slate-100 rounded-xl flex justify-between items-center group hover:bg-brand-50 hover:border-brand-100 transition-colors">
+                  <div>
+                    <div className="font-bold text-slate-900 text-sm group-hover:text-brand-800">{format(new Date(shift.start_time), 'EEEE, MMM d')}</div>
+                    <div className="text-[10px] uppercase font-black text-slate-400 tracking-wider group-hover:text-brand-600/70">
+                      {format(new Date(shift.start_time), 'HH:mm')} - {format(new Date(shift.end_time), 'HH:mm')}
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-xs font-bold text-brand-600">{shift.title || 'Work Shift'}</div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      </div>
 
         {/* Historical List Card */}
         <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col">

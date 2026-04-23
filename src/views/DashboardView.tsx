@@ -19,7 +19,6 @@ import { LaborAnalytics } from '../components/dashboard/LaborAnalytics';
 import { EmployeeSettings } from '../components/dashboard/EmployeeSettings';
 import { TimeApproval } from '../components/dashboard/TimeApproval';
 import { motion, AnimatePresence } from 'motion/react';
-import { PublicHeader } from '../components/public/PublicHeader';
 
 interface DashboardViewProps {
   user: User;
@@ -29,7 +28,7 @@ interface DashboardViewProps {
 
 export const DashboardView: React.FC<DashboardViewProps> = ({ user, token, onLogout }) => {
   // Navigation state for the internal dashboard tabs
-  const [activeTab, setActiveTab] = useState<'home' | 'employees' | 'approvals' | 'payroll' | 'settings' | 'schedules' | 'history'>('home');
+  const [activeTab, setActiveTab] = useState<'home' | 'overview' | 'employees' | 'approvals' | 'payroll' | 'settings' | 'schedules'>('home');
   const [stats, setStats] = useState<Stat | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [pendingApprovals, setPendingApprovals] = useState(0);
@@ -95,11 +94,6 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ user, token, onLog
 
   return (
     <div className="flex flex-col min-h-screen bg-[#F8FAFC]">
-      <PublicHeader 
-        companyName={companyName} 
-        userName={user.name} 
-        onLogout={onLogout} 
-      />
       <div className="flex flex-1 font-sans text-slate-900 relative overflow-hidden">
         {/* Mobile Sidebar Overlay */}
         <AnimatePresence>
@@ -125,6 +119,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ user, token, onLog
                   onLogout={onLogout} 
                   onClose={() => setIsSidebarOpen(false)}
                   pendingApprovals={pendingApprovals}
+                  companyName={companyName}
                 />
               </motion.div>
             </div>
@@ -139,6 +134,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ user, token, onLog
             onTabChange={setActiveTab} 
             onLogout={onLogout}
             pendingApprovals={pendingApprovals}
+            companyName={companyName}
           />
         </div>
 
@@ -154,13 +150,13 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ user, token, onLog
               </button>
               <div className="flex items-center gap-2">
                 <span className="font-extrabold text-slate-900 uppercase tracking-[0.1em] text-[10px] bg-slate-200/50 px-3 py-1 rounded-full">
-                  {activeTab === 'home' ? (user.role === 'Admin' ? 'Management Overview' : 'Punch Clock') : activeTab === 'employees' ? 'Company Workforce' : activeTab === 'approvals' ? 'Shift Approvals' : activeTab === 'payroll' ? 'Payroll Management' : activeTab === 'schedules' ? 'Shift Scheduling' : activeTab === 'history' ? 'My Attendance' : 'System Settings'}
+                  {activeTab === 'home' ? 'Punch Clock' : activeTab === 'overview' ? 'Management Overview' : activeTab === 'employees' ? 'Company Workforce' : activeTab === 'approvals' ? 'Shift Approvals' : activeTab === 'payroll' ? 'Payroll Management' : activeTab === 'schedules' ? 'Shift Scheduling' : 'System Settings'}
                 </span>
               </div>
             </div>
             
             <div className="flex items-center gap-4">
-              {user.role === 'Admin' && activeTab === 'home' && (
+              {user.role === 'Admin' && activeTab === 'overview' && (
                 <button 
                   onClick={handleGeneratePayroll}
                   className="px-4 py-1.5 bg-brand-600 text-white rounded-lg text-[10px] font-black uppercase tracking-widest shadow-lg shadow-brand-600/10 hover:bg-brand-700 transition-all border border-brand-600 hidden sm:block"
@@ -178,6 +174,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ user, token, onLog
         <div className="flex-1 overflow-auto p-8">
           {activeTab === 'home' && (
             <div className="max-w-6xl mx-auto space-y-6">
+              <div className="grid grid-cols-1 gap-8">
+                <EmployeeActions token={token} />
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'overview' && user.role === 'Admin' && (
+            <div className="max-w-6xl mx-auto space-y-6">
               {/* Stats Grid */}
               {stats && (
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
@@ -187,16 +191,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ user, token, onLog
                 </div>
               )}
 
-              {/* Conditional Main Feature based on Role */}
               <div className="grid grid-cols-1 gap-8">
-                {user.role === 'Staff' ? (
-                  <EmployeeActions token={token} />
-                ) : (
-                  <>
-                    <LaborAnalytics token={token} />
-                    <AdminLiveFeed token={token} />
-                  </>
-                )}
+                <LaborAnalytics token={token} />
+                <AdminLiveFeed token={token} />
               </div>
             </div>
           )}
@@ -209,8 +206,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ user, token, onLog
             <TimeApproval token={token} />
           )}
 
-          {/* Personal Timesheet Tab (Staff Dashboard or Admin Personal) */}
-          {activeTab === 'history' && <EmployeeActions token={token} />}
+
 
           {/* Payroll Management Tab */}
           {activeTab === 'payroll' && <PayrollManagement token={token} user={user} />}

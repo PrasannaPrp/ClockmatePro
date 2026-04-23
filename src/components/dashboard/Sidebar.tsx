@@ -3,7 +3,7 @@
  * Includes branding, main links, and user profile/logout controls.
  */
 import React from 'react';
-import { Clock, Users, FileText, Settings, LogOut, Calendar, ShieldCheck } from 'lucide-react';
+import { Clock, Users, FileText, Settings, LogOut, Calendar, ShieldCheck, Activity } from 'lucide-react';
 import { User } from '../../types';
 
 // Sub-component for individual navigation links
@@ -41,9 +41,10 @@ interface SidebarProps {
   onLogout: () => void;
   onClose?: () => void;
   pendingApprovals?: number;
+  companyName?: string;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ user, activeTab, onTabChange, onLogout, onClose, pendingApprovals }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ user, activeTab, onTabChange, onLogout, onClose, pendingApprovals, companyName }) => {
   const handleTabClick = (tab: string) => {
     onTabChange(tab);
     if (onClose) onClose();
@@ -60,7 +61,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ user, activeTab, onTabChange, 
           <div className="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center shadow-sm shadow-brand-600/30 group-hover:scale-110 transition-transform">
             <div className="w-4 h-4 border-2 border-white rounded-sm"></div>
           </div>
-          <span className="font-bold text-xl tracking-tight text-slate-900">ClockMate</span>
+          <span className="font-bold text-xl tracking-tight text-slate-900 truncate">
+            {companyName || 'ClockMate'}
+          </span>
         </div>
       </div>
 
@@ -68,18 +71,19 @@ export const Sidebar: React.FC<SidebarProps> = ({ user, activeTab, onTabChange, 
       <nav className="flex-1 p-4 space-y-2 overflow-y-auto custom-scrollbar">
         <NavItem 
           icon={<Clock size={20}/>} 
-          label={user.role === 'Admin' ? "Overview" : "My Timesheet"} 
+          label="Punch Clock" 
           active={activeTab === 'home'} 
           onClick={() => handleTabClick('home')} 
         />
         {user.role === 'Admin' && (
           <NavItem 
-            icon={<Clock size={20}/>} 
-            label="My Attendance" 
-            active={activeTab === 'history'} 
-            onClick={() => handleTabClick('history')} 
+            icon={<Activity size={20}/>} 
+            label="Overview" 
+            active={activeTab === 'overview'} 
+            onClick={() => handleTabClick('overview')} 
           />
         )}
+
         {user.role === 'Admin' && (
           <NavItem 
             icon={<Users size={20}/>} 
