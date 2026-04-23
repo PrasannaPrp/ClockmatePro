@@ -23,7 +23,7 @@ export const AdminLiveFeed: React.FC<AdminLiveFeedProps> = ({ token }) => {
         setHistory(data);
       }
     } catch (err: any) {
-      // In AI Studio dev environment, "Failed to fetch" is common during reloads/rate limits.
+      // "Failed to fetch" can occur during network reloads/rate limits.
       // We log it only if it's NOT a transient network failure to keep the console clean.
       if (err.message !== 'Failed to fetch') {
         console.error('Admin Feed Sync Error:', err);
@@ -33,7 +33,7 @@ export const AdminLiveFeed: React.FC<AdminLiveFeedProps> = ({ token }) => {
 
   React.useEffect(() => {
     fetchFeed();
-    const interval = setInterval(fetchFeed, 30000); // Poll every 30 seconds to avoid AI Studio rate limits
+    const interval = setInterval(fetchFeed, 30000); // Poll every 30 seconds to avoid rate limits
     return () => clearInterval(interval);
   }, [token]);
 
