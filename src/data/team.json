@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Sumit Yadav",
+    "studentId": "s8117110",
+    "role": "Project Manager",
+    "color": "bg-brand-600",
+    "initials": "SY"
+  },
+  {
+    "name": "Rishav Neupane",
+    "studentId": "s8105118",
+    "role": "Lead Developer",
+    "color": "bg-emerald-600",
+    "initials": "RN"
+  },
+  {
+    "name": "Kripa Neupane",
+    "studentId": "s8116642",
+    "role": "UI/UX Designer",
+    "color": "bg-amber-500",
+    "initials": "KN"
+  },
+  {
+    "name": "Prasanna Pandey",
+    "studentId": "s8107336",
+    "role": "System Architect",
+    "color": "bg-purple-600",
+    "initials": "PP"
+  }
+]

@@ -1,0 +1,6 @@
+{
+  "name": "ClockMate",
+  "description": "A comprehensive clock-in/out and payslip management system with GPS verification, automated payroll processing, and real-time notifications.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["GPS-verified Attendance", "Automated Payroll", "Admin Dashboard", "Employee Portal"]
+}
