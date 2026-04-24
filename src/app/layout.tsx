@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   description: "Revolutionize your team management with geofenced attendance tracking, automated fortnightly payroll, and professional payslip generation. The high-performance solution for modern companies.",
   keywords: ["Workforce Management", "Attendance Tracking", "Payroll Automation", "Geofencing", "Enterprise Payroll", "ClockMate", "Payslip Generator"],
   manifest: "/manifest.json",
+  icons: {
+    icon: '/a.png',
+  },
   themeColor: "#4f46e5",
   viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0",
   openGraph: {
