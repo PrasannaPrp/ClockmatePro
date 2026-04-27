@@ -32,17 +32,22 @@ ClockMate is a professional, high-performance workforce management platform desi
 ## 🏗️ Installation & Setup
 
 ### 1. Prerequisites
-Ensure you have the following installed:
-*   Node.js (v18.0 or higher)
-*   A MongoDB Atlas cluster or local MongoDB instance
+Before installing, make sure you have the following downloaded and configured:
+
+*   **Node.js (v18.0 or higher)**: [Download Node.js](https://nodejs.org/) (LTS version recommended).
+*   **MongoDB**:
+    *   **Cloud (Recommended)**: Create a free cluster on [MongoDB Atlas](https://www.mongodb.com/cloud/atlas/register).
+    *   **Local**: Download and install [MongoDB Community Server](https://www.mongodb.com/try/download/community).
+*   **Git**: [Download Git](https://git-scm.com/downloads) to clone the repository.
+
 
 ### 2. Environment Configuration
 Create a `.env` file in the root directory and populate it with the following:
 ```env
 MONGODB_URI=your_mongodb_connection_string
-JWT_SECRET=your_secure_jwt_secret
+NEXTAUTH_SECRET="anything_go_here_secret"
 GOOGLE_EMAIL=your_gmail_address
-GOOGLE_PASSWORD=your_google_app_password
+GOOGLE_PASSWORD=your_google_app_password # [How to get an App Password](https://support.google.com/accounts/answer/185833)
 APP_URL=http://localhost:3000
 ```
 
@@ -76,4 +81,4 @@ ClockMate was engineered by a dedicated group of developers and system architect
 
 ---
 © 2026 ClockMate Workforce Management Systems.
-# clockmate
+

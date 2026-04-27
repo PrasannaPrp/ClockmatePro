@@ -3,8 +3,7 @@ import type { Metadata } from 'next';
 import { PublicHeader } from '../../components/public/PublicHeader';
 import { PublicFooter } from '../../components/public/PublicFooter';
 import Link from 'next/link';
-import { Clock } from 'lucide-react';
-import teamData from '../../data/team.json';
+
 
 export const metadata: Metadata = {
   title: "About ClockMate | Our Mission & Vision",
