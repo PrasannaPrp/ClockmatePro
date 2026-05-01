@@ -74,9 +74,9 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to see the r
 
 ClockMate was engineered by a dedicated group of developers and system architects:
 
-*   **Sumit Yadav** (s8117110) - Project Manager
+*   **Santosh Prasad Gautam** (s8193175) - Project Manager
 *   **Rishav Neupane** (s8105118) - Lead Developer
-*   **Kripa Neupane** (s8116642) - UI/UX Designer
+*   **Amy Nguyen** (s8116504) - UI/UX Designer
 *   **Prasanna Pandey** (s8107336) - System Architect
 
 ---
