@@ -1,4 +1,4 @@
-// File: /Users/sunny/Downloads/clockmate/src/app/api/attendance/clock-out/route.ts
+// File: C:\Users\pande\OneDrive\Documents\project2\clockmate2\clockmate\src\app\api\attendance\clock-out\route.ts
 import * as entry from '../../../../../../src/app/api/attendance/clock-out/route.js'
 import type { NextRequest } from 'next/server.js'
 

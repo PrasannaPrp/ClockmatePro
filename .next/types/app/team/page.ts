@@ -1,4 +1,4 @@
-// File: /Users/sunny/Downloads/clockmate/src/app/team/page.tsx
+// File: C:\Users\pande\OneDrive\Documents\project2\clockmate2\clockmate\src\app\team\page.tsx
 import * as entry from '../../../../src/app/team/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

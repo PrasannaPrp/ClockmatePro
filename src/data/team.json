@@ -1,10 +1,10 @@
 [
   {
-    "name": "Sumit Yadav",
-    "studentId": "s8117110",
+    "name": "Santosh Prasad Gautam",
+    "studentId": "s8193175",
     "role": "Project Manager",
     "color": "bg-brand-600",
-    "initials": "SY"
+    "initials": "SPG"
   },
   {
     "name": "Rishav Neupane",
@@ -14,11 +14,11 @@
     "initials": "RN"
   },
   {
-    "name": "Kripa Neupane",
-    "studentId": "s8116642",
+    "name": "Amy Nguyen",
+    "studentId": "s8116504",
     "role": "UI/UX Designer",
     "color": "bg-amber-500",
-    "initials": "KN"
+    "initials": "AN"
   },
   {
     "name": "Prasanna Pandey",

@@ -2,7 +2,10 @@
   "/api/attendance/approve/route": "app/api/attendance/approve/route.js",
   "/api/attendance/history/route": "app/api/attendance/history/route.js",
   "/api/shifts/route": "app/api/shifts/route.js",
+  "/api/dashboard/stats/route": "app/api/dashboard/stats/route.js",
+  "/api/company/settings/route": "app/api/company/settings/route.js",
+  "/api/attendance/clock-in/route": "app/api/attendance/clock-in/route.js",
+  "/api/attendance/clock-out/route": "app/api/attendance/clock-out/route.js",
   "/page": "app/page.js",
-  "/team/page": "app/team/page.js",
-  "/contact/page": "app/contact/page.js"
+  "/team/page": "app/team/page.js"
 }
